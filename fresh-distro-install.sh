@@ -24,12 +24,12 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my=zsh/
 
 # TODO write script to install the contents
 #      create simu-links of the dotfile dir contents
-ln -s `pwd`/.doom.d ~/.doom.d
-ln -s `pwd`/vmlopez.zsh-theme ~/.oh-my-zsh/custom/themes
-ln -s `pwd`/.bashrc ~/.bashrc
-ln -s `pwd`/.bash_aliases ~/.bash_aliases
-ln -s `pwd`/.zshrc ~/.zshrc
-ln -s `pwd`/.vimrc ~/.vimrc
-ln -s `pwd`/.gitconfig ~/.gitconfig
+ln -sf `pwd`/.doom.d ~/.doom.d
+ln -sf `pwd`/vmlopez.zsh-theme ~/.oh-my-zsh/custom/themes
+ln -sf `pwd`/.bashrc ~/.bashrc
+ln -sf `pwd`/.bash_aliases ~/.bash_aliases
+ln -sf `pwd`/.zshrc ~/.zshrc
+ln -sf `pwd`/.vimrc ~/.vimrc
+ln -sf `pwd`/.gitconfig ~/.gitconfig
 
 # TODO add option to remove ls background coloring
