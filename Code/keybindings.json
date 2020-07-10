@@ -1,0 +1,13 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+alt+u",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "brittany --write-mode=inplace `pwd`/${fileBasename}\u000D" }
+    },
+    {
+        "key": "ctrl+alt+n",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "echo `pwd`/${fileBasename}\u000D" }
+    }
+]
