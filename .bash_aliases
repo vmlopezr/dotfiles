@@ -59,5 +59,5 @@ alias docs='cd ~/Documents'
 alias fonts='fc-list'
 alias pen='cd ~/Documents/development/pen-testing && make run'
 alias hs='cd ~/Documents/development/haskell && make run'
-alias realias='source ~/.bash_aliases'
+alias realias='source ~/.zshrc'
 alias ..="cd .."
