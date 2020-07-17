@@ -11,7 +11,16 @@
 
 ;; [[file:config.org::*Basic Configuration][Basic Configuration:3]]
 ;; Set defaults
+(require 'windsize)
+(windsize-default-keybindings)
 (setq
+ company-quickhelp-delay 0.3
+ windsize-cols 1
+ windsize-rows 1
+ pos-tip-background-color "#cbcbcb"
+ pos-tip-foreground-color "#444444"
+ pos-tip-border-width 3
+ pos-tip-use-relative-coordinates 1
  undo-limit 80000000                         ; Raise undo-limit to 80Mb
  truncate-lines 0
  evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
@@ -39,7 +48,8 @@
 ;; [[file:config.org::*Projectile][Projectile:1]]
 (after! projectile
   (projectile-mode)
-  (projectile-load-known-projects))
+  (projectile-load-known-projects)
+  (projectile-discover-projects-in-search-path))
 (setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/"))
 (defun projectile-ignored-project-function (filepath)
   "Return t if FILEPATH is within any of `projectile-ignored-projects'"
@@ -82,7 +92,7 @@
   (company-idle-delay 0.3)
   (company-show-numbers t)
   :config
-  (custom-set-faces! '(company-tooltip :background "#ff0000"))
+  (custom-set-faces! '(company-tooltip :background "#cbcbcb" :foreground "#444444"))
   (global-company-mode 1)
   (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate)))
 

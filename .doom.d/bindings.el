@@ -3,8 +3,8 @@
 (map!
  (:leader
   :desc "Focus on treemacs" "o m" #'treemacs-select-window
+  :desc "dumb-jump-go-back" "g b" #'dumb-jump-back
   :desc "dumb-jump-go" "g d" #'dumb-jump-go
-  :desc "dumb-jump-back" "g f" #'dumb-jump-back
   :desc "dumb-jump-quick-look" "g q" #'dumb-jump-quick-look
   :desc "dumb-jump-go-other-window" "g w" #'dumb-jump-go-other-window)
   ;; Make esc exit any popup
@@ -16,3 +16,8 @@
     minibuffer-local-isearch-map)
     [escape] #'abort-recursive-edit
     "C-r" #'evil-paste-from-register))
+(map!
+ "S-C-l" #'windsize-right
+ "S-C-h" #'windsize-left
+ "S-C-j" #'windsize-down
+ "S-C-k" #'windsize-up)

@@ -118,5 +118,9 @@ The following are custom key bindings set by myself.
 | SPC o m | Focus on treemacs          |
 | SPC g d | dumb-jump-go               |
 | SPC g f | dumb-jump-back             |
-| SPC g q | dum-jump-quick-look        |
+| SPC g q | dumb-jump-quick-look       |
 | SPC g w | dumb-jump-go-other-windows |
+| S-C-l   | move window right edge     |
+| S-C-h   | move window left edge      |
+| S-C-j   | move window bottom edge    |
+| S-C-k   | move window top edge       |
