@@ -1,15 +1,23 @@
-;; [[file:config.org::*Basic Configuration][Basic Configuration:1]]
+#+TITLE: Literate Doom Emacs Configuration
+#+AUTHOR: Victor Lopez (vmlopezr)
+#+PROPERTY: header-args :emacs-lisp :tangle yes :comments link
+#+STARTUP: org-startup-folded: showall
+
+* Basic Configuration
+Set up user configuration.
+#+BEGIN_SRC emacs-lisp
 (setq user-full-name "Victor Lopez"
       user-mail-address "vmlopez.r@gmail.com")
-;; Basic Configuration:1 ends here
+#+END_SRC
 
-;; [[file:config.org::*Basic Configuration][Basic Configuration:2]]
+#+BEGIN_SRC emacs-lisp
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
   (toggle-frame-maximized)
   (toggle-frame-fullscreen))
-;; Basic Configuration:2 ends here
+#+END_SRC
 
-;; [[file:config.org::*Basic Configuration][Basic Configuration:3]]
+Set basic default settings.
+#+BEGIN_SRC emacs-lisp
 ;; Set defaults
 (setq
  undo-limit 80000000                         ; Raise undo-limit to 80Mb
@@ -25,18 +33,25 @@
  doom-theme 'doom-vibrant             ;;set emacs theme
  org-directory "~/org/"
  projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
-;; Basic Configuration:3 ends here
+#+END_SRC
 
-;; [[file:config.org::*Treemacs][Treemacs:1]]
+* Treemacs
+
+Set icon colors for the project side bar and show hidden files by default. The actions added are used to
+easily set the target window in which the selected files will open.
+
+#+BEGIN_SRC emacs-lisp
 (use-package treemacs
   :config
   (setq doom-themes-treemacs-theme "doom-colors")
   (setq treemacs-show-hidden-files t))
 (treemacs-define-RET-action 'file-node-closed #'treemacs-visit-node-ace)
 (treemacs-define-RET-action 'file-node-open #'treemacs-visit-node-ace)
-;; Treemacs:1 ends here
+#+END_SRC
 
-;; [[file:config.org::*Projectile][Projectile:1]]
+* Projectile
+Set projectile configurations to auto detect projects.
+#+BEGIN_SRC emacs-lisp
 (after! projectile
   (projectile-mode)
   (projectile-load-known-projects))
@@ -44,9 +59,10 @@
 (defun projectile-ignored-project-function (filepath)
   "Return t if FILEPATH is within any of `projectile-ignored-projects'"
   (or (mapcar (lambda (p) (s-starts-with-p p filepath)) projectile-ignored-projects)))
-;; Projectile:1 ends here
-
-;; [[file:config.org::*Doom-Modeline][Doom-Modeline:1]]
+#+END_SRC
+* Doom-Modeline
+Configuration for doom-modeline.
+#+BEGIN_SRC emacs-lisp
 (use-package doom-modeline
   :ensure t
   :config
@@ -60,15 +76,18 @@
     '(doom-modeline-evil-insert-state :weight bold :foreground "#339CDB")
   :hook
   (after-init . doom-modeline-mode))
-;; Doom-Modeline:1 ends here
-
-;; [[file:config.org::*Auto-Dim-Other-Buffers][Auto-Dim-Other-Buffers:1]]
+#+END_SRC
+* Auto-Dim-Other-Buffers
+Set auto-dim-other-buffers to start when emacs loads. This is used to dim inactive buffers.
+#+BEGIN_SRC emacs-lisp
 (add-hook 'after-init-hook (lambda ()
   (when (fboundp 'auto-dim-other-buffers-mode)
     (auto-dim-other-buffers-mode t))))
-;; Auto-Dim-Other-Buffers:1 ends here
+#+END_SRC
 
-;; [[file:config.org::*Company][Company:1]]
+* Company
+Set my configuration for company autocomplete.
+#+BEGIN_SRC emacs-lisp
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
@@ -92,9 +111,10 @@
   (company-quickhelp-mode 1)
   (use-package pos-tip
   :ensure t))
-;; Company:1 ends here
+#+END_SRC
 
-;; [[file:config.org::*Flycheck][Flycheck:1]]
+* Flycheck
+#+BEGIN_SRC emacs-lisp
 (use-package flycheck
     :ensure t
     :config
@@ -102,17 +122,21 @@
     (add-hook 'typescript-mode-hook 'flycheck-mode)
     (add-hook 'elpy-mode-hook 'flycheck-mode)
 )
-;; Flycheck:1 ends here
 
-;; [[file:config.org::*Typescript-Mode][Typescript-Mode:1]]
+#+END_SRC
+* Typescript
+The following are the typescript configurations.
+** Typescript-Mode
+#+BEGIN_SRC emacs-lisp
 (use-package typescript-mode
   :ensure t
   :config
   (setq typescript-indent-level 2)
   (add-hook 'typescript-mode #'subword-mode))
-;; Typescript-Mode:1 ends here
+#+END_SRC
 
-;; [[file:config.org::*TIDE][TIDE:1]]
+** TIDE
+#+BEGIN_SRC emacs-lisp
 (defun setup-tide-mode ()
   (interactive)
   (tide-setup)
@@ -130,9 +154,11 @@
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)))
-;; TIDE:1 ends here
 
-;; [[file:config.org::*Web-Mode][Web-Mode:1]]
+#+END_SRC
+* Web-Mode
+
+#+BEGIN_SRC emacs-lisp
 (use-package web-mode
   :ensure t
   :mode (("\\.html?\\'" . web-mode)
@@ -155,16 +181,16 @@
         (setup-tide-mode))))
     ;; enable typescript-tslint checker
     (flycheck-add-mode 'typescript-tslint 'web-mode))
-;; Web-Mode:1 ends here
-
-;; [[file:config.org::*CSS-Mode][CSS-Mode:1]]
+#+END_SRC
+* CSS-Mode
+#+BEGIN_SRC emacs-lisp
 (use-package css-mode
   :config (setq css-indent-offset 2))
-;; CSS-Mode:1 ends here
-
-;; [[file:config.org::*Load Files][Load Files:1]]
+#+END_SRC
+* Load Files
+#+BEGIN_SRC emacs-lisp
 (custom-set-variables
  '(package-selected-packages (quote (org-plus-contrib))))
 (custom-set-faces)
 (load! "bindings")
-;; Load Files:1 ends here
+#+END_SRC

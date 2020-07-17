@@ -1,0 +1,122 @@
+#+TITLE: My Doom Emacs Binding Cheat Sheet
+#+AUTHOR: Victor Lopez
+#+EMAIL: vmlopez.r@gmail.com
+#+LANGUAGE: en
+#+STARTUP: noinlineimages
+#+PROPERTY: header-args:emacs-lisp :tangle yes :cache yes :results silent :padline no
+#+OPTIONS: toc:nil
+#+EXPORT_FILE_NAME: Cheat-Sheet.md
+
+* IMPORTANT EVIL BINDINGS
+The following are the evil mode bindings. This is written here to have a quick visual listing.
+
+| Keys       | Description                   |
+|------------+-------------------------------|
+| !          | rotate-text                   |
+| "          | evil-use-register             |
+| &          | evil-ex-repeat-substitute     |
+| .          | evil-repeat                   |
+| <          | evil-shift-left               |
+| >          | evil-shift-right              |
+| =          | evil-indent                   |
+| @          | evil-execute-macro            |
+| a          | evil-apend                    |
+| c          | evil-change                   |
+| d          | evil-delete                   |
+| i          | evil-insert                   |
+| m          | evil-set-marker               |
+| o          | evil-open-below               |
+| p          | evil-paste-after              |
+| q          | evil-record-macro             |
+| r          | evil-replace                  |
+| s          | evil-substitute               |
+| u          | undo                          |
+| x          | evil-delete-char              |
+| y          | evil-yank                     |
+| ~          | evil-invert-char              |
+| A          | evil-append-line              |
+| C          | evil-change-line              |
+| D          | evil-delete-line              |
+| I          | evil-insert-line              |
+| J          | evil-join                     |
+| K          | +lookup/documentation         |
+| O          | evil-open-above               |
+| P          | evil-paste-before             |
+| R          | evil-replace-state            |
+| S          | evil-change-whole-line        |
+| X          | evil-delete-backward-char     |
+| Y          | evil-yank-line                |
+| C-+        | doom/reset-font-size          |
+| C--        | text-scale-decrease           |
+| C-.        | evil-repeat-pop               |
+| C-=        | text-scale-increase           |
+| C-n        | evil-paste-pop-next           |
+| C-p        | evil-paste-pop                |
+| C-r        | redo                          |
+| C-t        | +workspace/new                |
+| C-M--      | doom/decrease-font-size       |
+| C-M-d      | evil-multiedit-restore        |
+| C-S-f      | toggle-frame-fullscreen       |
+| C-S-t      | +workspace/display            |
+| M-.        | evil-repeat-pop-next          |
+| M-d        | evil-multiedit-match-symbol.. |
+| M-D        | evil-multiedit-match-symbol.. |
+| deletechar | evil-delete-char              |
+| escape     | evil-force-normal-state       |
+| insert     | evil-insert                   |
+| insertchar | evil-insert                   |
+| [ b        | previous-buffer               |
+| [ f        | +evil/previous-file           |
+| [ o        | +evil/insert-newline-above    |
+| [ W        | +workspace/switch-left        |
+| ] b        | next-buffer                   |
+| ] f        | +evil/next-file               |
+| ] o        | +evil/insert-newline-below    |
+| ] W        | +workspace/switch-right       |
+| g &        | evil-ex-repeat-global-sub     |
+| g ,        | goto-last-change-reverse      |
+| g -        | evil-numbers/dec-at-pt        |
+| g 8        | what-cursor-position          |
+| g ;        | goto-last-change              |
+| g =        | evil-numbers/inc-at-pt        |
+| g ?        | evil-rot-13                   |
+| g @        | +evil:apply-macro             |
+| g a        | what-cursor-position          |
+
+* Treemacs Evil Bindings
+The following are the default evil bindings for treemacs. The return key action has been reconfigured on 'config.el' to prompt for the window to open a file to.
+| Keys   | Description                           |
+|--------+---------------------------------------|
+| RET    | treemacs-RET-action                   |
+| TAB    | treemacs-TAB-action                   |
+| !      | treemacs-run-shell-command..          |
+| ?      | treemacs-helpful-hydra                |
+| b      | treemacs-add-bookmark                 |
+| j      | treemacs-next-line                    |
+| k      | treemacs-previous-line                |
+| w      | treemacs-set-width                    |
+| H      | treemacs-collapse-parent-node         |
+| M-j    | treemacs-next-neighbour               |
+| M-k    | treemacs-previous-neighbour           |
+| M-J    | treemacs-next-line-other-window       |
+| M-K    | treemacs-previous-line-other-window   |
+| return | treemacs-RET-action                   |
+| tab    | treemacs-TAB-action                   |
+| o s    | treemacs-visit-node-vertical-split    |
+| o v    | treemacs-visit-node-horizontal-splilt |
+| t a    | treemacs-filewatch-mode               |
+| t f    | treemacs-follow-mode                  |
+| t g    | treemacs-git-mode                     |
+| t h    | treemacs-toggle-show-dotfiles         |
+| t v    | treemacs-fringe-indicatior            |
+| t w    | treemacs-toggle-fixed-width           |
+
+* Custom Bindings
+The following are custom key bindings set by myself.
+| Keys    | Description                |
+|---------+----------------------------|
+| SPC o m | Focus on treemacs          |
+| SPC g d | dumb-jump-go               |
+| SPC g f | dumb-jump-back             |
+| SPC g q | dum-jump-quick-look        |
+| SPC g w | dumb-jump-go-other-windows |
