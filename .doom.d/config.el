@@ -13,12 +13,16 @@
 ;; Set defaults
 (require 'windsize)
 (windsize-default-keybindings)
+(require 'fill-column-indicator)
+(add-hook 'emacs-lisp-mode-hook (lambda () (fci-mode 1)))
 (setq
+ org-startup-folded t
  company-quickhelp-delay 0.3
+ fci-rule-width 1
+ fci-rule-color "darkblue"
+ fci-rule-column 80
  windsize-cols 1
  windsize-rows 1
- pos-tip-background-color "#cbcbcb"
- pos-tip-foreground-color "#444444"
  pos-tip-border-width 3
  pos-tip-use-relative-coordinates 1
  undo-limit 80000000                         ; Raise undo-limit to 80Mb
@@ -79,6 +83,10 @@
 ;; Auto-Dim-Other-Buffers:1 ends here
 
 ;; [[file:config.org::*Company][Company:1]]
+;; (setq
+;;  pos-tip-background-color "#cbcbcb"
+;;  pos-tip-foreground-color "#444444"
+;;  )
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)
@@ -92,16 +100,20 @@
   (company-idle-delay 0.3)
   (company-show-numbers t)
   :config
-  (custom-set-faces! '(company-tooltip :background "#cbcbcb" :foreground "#444444"))
+  (custom-set-faces!
+    '(company-tooltip :background "#354069" :foreground "#aed4d0")
+    '(company-tooltip-common :foreground "#f53302")
+    '(company-tooltip-selection :background "#98d4f5" :foreground "#294757")
+    )
   (global-company-mode 1)
   (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate)))
 
-(use-package company-quickhelp
-  :ensure t
-  :init
-  (company-quickhelp-mode 1)
-  (use-package pos-tip
-  :ensure t))
+;; (use-package company-quickhelp
+;;   :ensure t
+;;   :init
+;;   (company-quickhelp-mode 1)
+;;   (use-package pos-tip
+;;   :ensure t))
 ;; Company:1 ends here
 
 ;; [[file:config.org::*Flycheck][Flycheck:1]]

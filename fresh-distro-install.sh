@@ -24,12 +24,16 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my=zsh/
 
 # TODO write script to install the contents
 #      create simu-links of the dotfile dir contents
-ln -sf `pwd`/.doom.d ~/.doom.d
-ln -sf `pwd`/vmlopez.zsh-theme ~/.oh-my-zsh/custom/themes
-ln -sf `pwd`/.bashrc ~/.bashrc
-ln -sf `pwd`/.bash_aliases ~/.bash_aliases
-ln -sf `pwd`/.zshrc ~/.zshrc
-ln -sf `pwd`/.vimrc ~/.vimrc
-ln -sf `pwd`/.gitconfig ~/.gitconfig
+ln -s `pwd`/.doom.d ~/.doom.d
+ln -s `pwd`/vmlopez.zsh-theme ~/.oh-my-zsh/custom/themes
+ln -s `pwd`/.bashrc ~/.bashrc
+ln -s `pwd`/.bash_aliases ~/.bash_aliases
+ln -s `pwd`/.zshrc ~/.zshrc
+ln -s `pwd`/.vimrc ~/.vimrc
+ln -s `pwd`/.gitconfig ~/.gitconfig
 
 # TODO add option to remove ls background coloring
+# For fedora systems, hibernating causes issues with the backlight when reopening and attempting
+# to resume a session. Adding the following text has solved the issues.
+#echo "mem_sleep_default=deep" >> /etc/default/grub # add the text to the file starting with "GRUB_CMDLINE_LINUX="
+sudo grub2-mkconfig -o boot/efi/EFI/fedora/grub.cfg

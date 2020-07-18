@@ -8,13 +8,13 @@
 (package! flycheck)
 (package! projectile)
 (package! company-quickhelp)
-(package! pos-tip)
 (package! web-mode)
 (package! dumb-jump)
 (package! typescript-mode)
 (package! tide)
 (package! css-mode)
 (package! ag)
+(package! fill-column-indicator)
 ;;org packages
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
@@ -33,3 +33,4 @@
 (package! neotree :disable t)
 (package! magit :disable t)
 (package! company-box :disable t)
+(package! company-quickhelp :disable t)
