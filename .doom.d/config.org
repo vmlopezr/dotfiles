@@ -10,12 +10,6 @@ Set up user configuration.
       user-mail-address "vmlopez.r@gmail.com")
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
-  (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
-#+END_SRC
-
 Set basic default settings.
 #+BEGIN_SRC emacs-lisp
 ;; Set defaults
@@ -47,7 +41,6 @@ Set basic default settings.
  org-directory "~/org/"
  projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
 #+END_SRC
-
 * Treemacs
 
 Set icon colors for the project side bar and show hidden files by default. The actions added are used to
@@ -102,10 +95,6 @@ Set auto-dim-other-buffers to start when emacs loads. This is used to dim inacti
 * Company
 Set my configuration for company autocomplete.
 #+BEGIN_SRC emacs-lisp
-;; (setq
-;;  pos-tip-background-color "#cbcbcb"
-;;  pos-tip-foreground-color "#444444"
-;;  )
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)

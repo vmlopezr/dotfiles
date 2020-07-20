@@ -4,12 +4,6 @@
 ;; Basic Configuration:1 ends here
 
 ;; [[file:config.org::*Basic Configuration][Basic Configuration:2]]
-(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
-  (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
-;; Basic Configuration:2 ends here
-
-;; [[file:config.org::*Basic Configuration][Basic Configuration:3]]
 ;; Set defaults
 (require 'windsize)
 (windsize-default-keybindings)
@@ -21,8 +15,8 @@
  fci-rule-width 1
  fci-rule-color "darkblue"
  fci-rule-column 80
- windsize-cols 1
- windsize-rows 1
+ windsize-cols 10
+ windsize-rows 10
  pos-tip-border-width 3
  pos-tip-use-relative-coordinates 1
  undo-limit 80000000                         ; Raise undo-limit to 80Mb
@@ -38,7 +32,7 @@
  doom-theme 'doom-vibrant             ;;set emacs theme
  org-directory "~/org/"
  projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
-;; Basic Configuration:3 ends here
+;; Basic Configuration:2 ends here
 
 ;; [[file:config.org::*Treemacs][Treemacs:1]]
 (use-package treemacs
@@ -83,10 +77,6 @@
 ;; Auto-Dim-Other-Buffers:1 ends here
 
 ;; [[file:config.org::*Company][Company:1]]
-;; (setq
-;;  pos-tip-background-color "#cbcbcb"
-;;  pos-tip-foreground-color "#444444"
-;;  )
 (use-package company
   :diminish company-mode
   :hook ((prog-mode LaTeX-mode latex-mode ess-r-mode) . company-mode)

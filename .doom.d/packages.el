@@ -7,7 +7,6 @@
 (package! doom-modeline)
 (package! flycheck)
 (package! projectile)
-(package! company-quickhelp)
 (package! web-mode)
 (package! dumb-jump)
 (package! typescript-mode)
@@ -28,9 +27,7 @@
 (package! company-jedi)
 (package! tramp)
 (package! windsize)
-
 ;; disable packages
 (package! neotree :disable t)
 (package! magit :disable t)
-(package! company-box :disable t)
-(package! company-quickhelp :disable t)
+(package! tramp :disable t)
