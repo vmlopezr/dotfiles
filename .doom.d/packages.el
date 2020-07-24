@@ -7,12 +7,18 @@
 (package! doom-modeline)
 (package! flycheck)
 (package! projectile)
-(package! web-mode)
 (package! dumb-jump)
+(package! ag)
+(package! editorconfig)
+;; web-design packages
 (package! typescript-mode)
 (package! tide)
+(package! prettier-js)
+(package! web-mode)
+(package! js2-mode)
 (package! css-mode)
-(package! ag)
+(package! scss-mode)
+(package! json-mode)
 (package! fill-column-indicator)
 ;;org packages
 (package! doct
@@ -24,6 +30,7 @@
 (package! ox-gfm :pin "99f93011b0...")
 (package! org-ref :pin "b05d6b4434...")
 (package! elpy)
+;; Company packages
 (package! company-jedi)
 (package! tramp)
 (package! windsize)

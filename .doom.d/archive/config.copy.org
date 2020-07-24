@@ -13,21 +13,22 @@ Set up user configuration.
 Set basic default settings.
 #+BEGIN_SRC emacs-lisp
 ;; Set defaults
+
 (require 'windsize)
 (windsize-default-keybindings)
 (require 'fill-column-indicator)
 (add-hook 'emacs-lisp-mode-hook (lambda () (fci-mode 1)))
-(add-hook 'company-mode-hook (lambda () (fci-mode 1)))
 (setq
  org-startup-folded t
- fci-rule-width 4
+ fci-rule-width 1
+ fci-rule-color "darkblue"
  fci-rule-column 80
  windsize-cols 10
  windsize-rows 10
  pos-tip-border-width 3
  pos-tip-use-relative-coordinates 1
  undo-limit 80000000                         ; Raise undo-limit to 80Mb
- truncate-lines 0
+ truncate-lines t
  evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
  auto-save-default t                         ; Nobody likes to loose work, I certainly don't
  inhibit-compacting-font-caches t            ; When there are lots of glyphs, keep them in memory
@@ -36,8 +37,9 @@ Set basic default settings.
  doom-variable-pitch-font (font-spec :family "Overpass" :size 16)
  doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
  display-line-numbers-type 'relative
- doom-theme 'doom-vibrant             ;;set emacs theme
- org-directory "~/org/")
+ doom-theme 'doom-vibrant ;;set emacs theme
+ org-directory "~/org/"
+ projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
 #+END_SRC
 * Doom Theme
 #+BEGIN_SRC emacs-lisp
@@ -47,6 +49,7 @@ Set basic default settings.
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t
         doom-themes-treemacs-theme "doom-colors")
+  (doom-themes-visual-bell-config)
   (doom-themes-treemacs-config)
   (require 'doom-themes-ext-org))
 #+END_SRC
@@ -54,21 +57,25 @@ Set basic default settings.
 
 Set icon colors for the project side bar and show hidden files by default. The actions added are used to
 easily set the target window in which the selected files will open.
-
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
   :config
   (setq
-    treemacs-width 40
-    treemacs-silent-refresh t
-    treemacs-no-png-images nil
-    treemacs-silent-filewatch t
-    treemacs-file-event-delay 1000
-    treemacs-show-hidden-files t))
+        treemacs-width 30
+        treemacs-silent-refresh t
+        treemacs-no-png-images nil
+        treemacs-silent-filewatch t
+        treemacs-file-event-delay 1000
+        treemacs-sorting 'alphabetic-case-insensitive-desc
+        treemacs-show-hidden-files t))
 (treemacs-define-RET-action 'file-node-closed #'treemacs-visit-node-ace)
 (treemacs-define-RET-action 'file-node-open #'treemacs-visit-node-ace)
-#+END_SRC
 
+;; (with-eval-after-load "treemacs"
+;;   (defvar treemacs-custom-html-icon (all-the-icons-icon-for-file "file.ts"))
+;;   (treemacs-define-custom-icon treemacs-custom-html-icon "zshrc" "tsx"))
+;; (treemacs-load-theme "Default")
+#+END_SRC
 * All The Icons
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons
@@ -79,21 +86,14 @@ easily set the target window in which the selected files will open.
 * Projectile
 Set projectile configurations to auto detect projects.
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :diminish projectile-mode
-  :commands (projectile-project-root)
-  :config
+(after! projectile
   (projectile-mode)
-  (setq projectile-sort-order 'recently-active
-        projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
   (projectile-load-known-projects)
-  (projectile-discover-projects-in-search-path)
-  (add-to-list 'projectile-globally-ignored-directories "~/.emacs.d")
-  (add-to-list 'projectile-globally-ignored-directories "node_modules"))
-;; (setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/" "node_modules"))
-;; (defun projectile-ignored-project-function (filepath)
-;;   "Return t if FILEPATH is within any of `projectile-ignored-projects'"
-;;   (or (mapcar (lambda (p) (s-starts-with-p p filepath)) projectile-ignored-projects)))
+  (projectile-discover-projects-in-search-path))
+(setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/"))
+(defun projectile-ignored-project-function (filepath)
+  "Return t if FILEPATH is within any of `projectile-ignored-projects'"
+  (or (mapcar (lambda (p) (s-starts-with-p p filepath)) projectile-ignored-projects)))
 #+END_SRC
 * Doom-Modeline
 Configuration for doom-modeline.
@@ -138,127 +138,126 @@ Set my configuration for company autocomplete.
   (custom-set-faces!
     '(company-tooltip :background "#354069" :foreground "#aed4d0")
     '(company-tooltip-common :foreground "#f53302")
-    '(company-tooltip-selection :background "#98d4f5" :foreground "#294757"))
-  )
+    '(company-tooltip-selection :background "#98d4f5" :foreground "#294757")
+    )
+  (global-company-mode 1)
+  (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate)))
 
-;; (use-package company-quickhelp
-;;   :ensure t
-;;   :init
-;;   (company-quickhelp-mode 1)
-;;   (use-package pos-tip
-;;   :ensure t))
+(use-package company-posframe
+  :config (company-posframe-mode 1))
 #+END_SRC
-
+* Editorconfig
+#+BEGIN_SRC emacs-lisp
+(use-package editorconfig
+  :config (editorconfig-mode 1))
+#+END_SRC
 * Flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  :init
-  (add-hook 'js2-mode-hook #'eslint-node-modules)
-  (add-hook 'typescript-mode-hook #'eslint-node-modules)
-  :config
-  (flymake-mode-off)
-  (global-flycheck-mode)
-  (evil-define-key 'normal flycheck-mode-map
-    (kbd "gh") 'flycheck-display-error-at-point)
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-  ;; (add-hook 'typescript-mode-hook 'flycheck-mode)
-  (add-hook 'elpy-mode-hook 'flycheck-mode)
+    :ensure t
+    :config
+    (add-hook 'typescript-mode-hook 'flycheck-mode)
+    (add-hook 'elpy-mode-hook 'flycheck-mode)
+    (add-hook 'flycheck-mode-hook 'add-node-modules-path)
 )
+
 #+END_SRC
 * JS & Related
-** Utils
-#+BEGIN_SRC emacs-lisp
-;; Set local eslint path
-(defun my-web-mode-hook ())
-(defun eslint-node-modules ()
-  (let* ((root (locate-dominating-file (or (buffer-file-name) default-directory) "node_modules"))
-         (eslint (and root (expand-file-name "node_modules/.bin/eslint" root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
-;; Set up tide mode
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (set (make-local-variable 'company-backends)
-       '((company-tide company-files :with company-yasnippet)
-         (company-dabbrev-code company-dabbrev)))
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (flycheck-add-next-checker 'typescript-tide '(t . typescript-tslint) 'append))
-#+END_SRC
+The following are the typescript configurations.
 ** JSON
 #+BEGIN_SRC emacs-lisp
 (use-package json-mode
   :mode "\\.json$")
 (add-to-list 'flycheck-disabled-checkers 'json-python-json)
-
-(use-package js2-mode
-  :mode "\\.js\\'"
-  :diminish js2-mode
-  :config
-  (setq js2-basic-offset 2)
-  (setq js-indent-level 2))
 #+END_SRC
-** Prettier
+** Tide Setup Hook
 #+BEGIN_SRC emacs-lisp
-(use-package prettier-js
-  :defer t)
-
+(defun tide-setup-hook ()
+  (interactive)
+  (tide-setup)
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (flycheck-mode +1)
+  ;; (flycheck-add-next-checker 'javascript-eslint 'typescript-tide)
+  (flycheck-add-next-checker 'typescript-tide '(t . typescript-tslint) 'append)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (setq
+   web-mode-enable-auto-quoting nil
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-attr-indent-offset 2
+   web-mode-attr-value-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-block-padding 2
+   web-mode-comment-style 2
+   web-mode-enable-css-colorization t
+   web-mode-enable-auto-pairing t
+   web-mode-enable-html-entities-fontification t
+   web-mode-enable-comment-keywords t
+   web-mode-enable-current-element-highlight t
+   web-mode-enable-auto-indentation nil)
+   (set (make-local-variable 'company-backends)
+       '((company-tide company-files :with company-yasnippet)
+         (company-dabbrev-code company-dabbrev)))
+   (flycheck-add-mode 'typescript-tslint 'web-mode)
+  )
 #+END_SRC
 ** TIDE
 #+BEGIN_SRC emacs-lisp
-(use-package tide
+;; (defun setup-tide-(message "")ode ()
+;;   (eldoc-mode +1)
+;;   (company-mode +1))
+(use-package prettier-js
   :defer t)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
 (add-hook 'before-save-hook 'tide-format-before-save)
-#+END_SRC
-** Typescript-Mode
-#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook (lambda () (fci-mode 1)))
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(use-package tide
+  :init
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)))
 
-(use-package typescript-mode
-  :mode "\\.ts"
-  :diminish typescript-mode
-  :config
-  (setq typescript-indent-level 2)
-  (add-hook 'typescript-mode #'subword-mode)
-  (add-hook 'typescript-mode-hook 'setup-tide-mode)
-  (add-hook 'typescript-mode-hook 'prettier-js-mode))
 #+END_SRC
-
 ** Web-Mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
   :ensure t
-  :mode (("\\.tsx\\'" . web-mode))
+  :mode (("\\.tsx$" . web-mode))
   :init
+  (add-hook 'web-mode-hook 'variable-pitch-mode)
+  (add-hook 'web-mode-hook 'company-mode)
+  (add-hook 'web-mode-hook 'add-node-modules-path)
   (add-hook 'web-mode-hook 'prettier-js-mode)
-  ;; (add-hook 'web-mode-hook (lambda ()
-        ;; (when (string-equal "tsx" (file-name-extension buffer-file-name)) (setup-tide-mode))))
-  ;; enable typescript-tslint checker
-  (add-hook 'web-mode-hook (lambda () (pcase (file-name-extension buffer-file-name)
-                      ("tsx" (setup-tide-mode))
-                      (_ (my-web-mode-hook)))))
-  :config
-  (setq web-mode-markup-indent-offset 2
-    web-mode-css-indent-offset 2
-    web-mode-code-indent-offset 2
-    web-mode-block-padding 2
-    web-mode-comment-style 2
-    web-mode-enable-css-colorization t
-    web-mode-enable-auto-pairing t
-    web-mode-enable-comment-keywords t
-    web-mode-enable-current-element-highlight t
-    web-mode-enable-auto-indentation nil))
-(eval-after-load "web-mode"
-  '(set-face-foreground 'web-mode-current-element-highlight-face "#ff0000"))
+  (add-hook 'web-mode-hook (lambda () ( when (string-equal "tsx" (file-name-extension buffer-file-name))
+        (tide-setup-hook)))))
 #+END_SRC
+
+** Typescript-Mode
+#+BEGIN_SRC emacs-lisp
+(use-package typescript-mode
+  :mode (("\\.ts$" . typescript-mode))
+  :init
+  (add-hook 'typescript-mode-hook (lambda () ( when (string-equal "ts" (file-name-extension buffer-file-name))
+        (tide-setup-hook))))
+  (add-hook 'typescript-mode-hook 'add-node-modules-path)
+  (add-hook 'typescript-mode #'subword-mode)
+  (add-hook 'typescript-mode-hook 'company-mode)
+  (add-hook 'typescript-mode-hook 'prettier-js-mode))
+
+(setq-default typescript-indent-level 2)
+(add-hook 'web-mode-hook (lambda () (fci-mode 1)))
+(add-hook 'typescript-mode-hook (lambda () (fci-mode 1)))
+#+END_SRC
+
 * CSS-Mode
 #+BEGIN_SRC emacs-lisp
 (use-package css-mode
   :config (setq css-indent-offset 2))
+(use-package scss-mode
+  :mode ("\\.scss$" "//.sass$"))
 #+END_SRC
 * Load Files
 #+BEGIN_SRC emacs-lisp
