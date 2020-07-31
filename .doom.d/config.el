@@ -4,31 +4,38 @@
 ;; Basic Configuration:1 ends here
 
 ;; [[file:config.org::*Basic Configuration][Basic Configuration:2]]
-;; Set defaults
-(require 'windsize)
+;; Removes toolbar, scroll bar and menu bar
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+(setq-default show-trailing-whitespace t)
+;; Remove useless whitespace before saving a file
+(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+
+
 (windsize-default-keybindings)
-(require 'fill-column-indicator)
+;;General hooks
 (add-hook 'emacs-lisp-mode-hook (lambda () (fci-mode 1)))
 (add-hook 'company-mode-hook (lambda () (fci-mode 1)))
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+;; Set variables
 (setq
  org-startup-folded t
  fci-rule-width 4
  fci-rule-column 80
- windsize-cols 10
- windsize-rows 10
- pos-tip-border-width 3
- pos-tip-use-relative-coordinates 1
+ windsize-cols 5
+ windsize-rows 5
  undo-limit 80000000                         ; Raise undo-limit to 80Mb
  truncate-lines 0
  evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
  auto-save-default t                         ; Nobody likes to loose work, I certainly don't
  inhibit-compacting-font-caches t            ; When there are lots of glyphs, keep them in memory
- truncate-string-ellipsis "…"               ; Unicode ellispis are nicer than "...", and also save
  doom-font (font-spec :family "JetBrains Mono" :size 14)
  doom-variable-pitch-font (font-spec :family "Overpass" :size 16)
  doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light)
- ;; display-line-numbers-type 'relative
- doom-theme 'doom-vibrant             ;;set emacs theme
+ display-line-numbers-type 'relative
+ doom-theme 'doom-tomorrow-night
  org-directory "~/org/")
 ;; Basic Configuration:2 ends here
 
@@ -41,13 +48,22 @@
         doom-themes-treemacs-theme "doom-colors")
   (doom-themes-treemacs-config)
   (require 'doom-themes-ext-org))
+(setq
+ evil-normal-state-cursor '(box "light blue")
+ evil-insert-state-cursor '(bar "#ff0000")
+ evil-visual-state-cursor '(hollow "orange")
+ )
+(custom-set-faces!
+  '(hl-line :background "#444")
+  '(region :background "#dbb672"))
 ;; Doom Theme:1 ends here
 
 ;; [[file:config.org::*Treemacs][Treemacs:1]]
 (use-package treemacs
   :config
   (setq
-    treemacs-width 40
+    treemacs-width 30
+    treemacs-wrap-around nil
     treemacs-silent-refresh t
     treemacs-no-png-images nil
     treemacs-silent-filewatch t
@@ -70,12 +86,13 @@
   :commands (projectile-project-root)
   :config
   (projectile-mode)
-  (setq projectile-sort-order 'recently-active
-        projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
+  (setq
+   projectile-sort-order 'recently-active
+   projectile-project-search-path '("~/Documents/GitHub/" "~/Documents/development"))
   (projectile-load-known-projects)
   (projectile-discover-projects-in-search-path)
   (add-to-list 'projectile-globally-ignored-directories "~/.emacs.d")
-  (add-to-list 'projectile-globally-ignored-directories "node_modules"))
+  (add-to-list 'projectile-globally-ignored-directories "*node_modules"))
 ;; (setq projectile-ignored-projects '("~/" "/tmp" "~/.emacs.d/.local/straight/repos/" "node_modules"))
 ;; (defun projectile-ignored-project-function (filepath)
 ;;   "Return t if FILEPATH is within any of `projectile-ignored-projects'"
@@ -93,15 +110,15 @@
   (setq doom-modeline-major-mode-color-icon t)
   (custom-set-faces!
     '(doom-modeline-buffer-modified :foreground "red"))
-    '(doom-modeline-evil-insert-state :weight bold :foreground "#339CDB")
+    '(doom-modeline-evil-insert-state :weight bold :foreground "#4ff0af")
   :hook
   (after-init . doom-modeline-mode))
 ;; Doom-Modeline:1 ends here
 
 ;; [[file:config.org::*Auto-Dim-Other-Buffers][Auto-Dim-Other-Buffers:1]]
-(add-hook 'after-init-hook (lambda ()
-  (when (fboundp 'auto-dim-other-buffers-mode)
-    (auto-dim-other-buffers-mode t))))
+;; (add-hook 'after-init-hook (lambda ()
+;;   (when (fboundp 'auto-dim-other-buffers-mode)
+;;     (auto-dim-other-buffers-mode t))))
 ;; Auto-Dim-Other-Buffers:1 ends here
 
 ;; [[file:config.org::*Company][Company:1]]
@@ -115,12 +132,16 @@
   (company-begin-commands '(self-insert-command))
   (company-require-match 'never)
   (company-global-modes '(not shell-mode eaf-mode))
-  (company-idle-delay 0.1)
+  (company-idle-delay 0.05)
   :config
   (custom-set-faces!
-    '(company-tooltip :background "#354069" :foreground "#aed4d0")
+    '(company-tooltip :background "#445263" :foreground "#63a68b")
     '(company-tooltip-common :foreground "#f53302")
-    '(company-tooltip-selection :background "#98d4f5" :foreground "#294757"))
+    '(company-tooltip-selection :background "#98d4f5" :foreground "#294757")
+    '(company-preview-common :foreground "#aed4d0")
+    '(company-tooltip-annotation :foreground "#aed4d0")
+    '(company-tooltip-annotation-selection :foreground "#aed4d0")
+    )
   )
 
 ;; (use-package company-quickhelp
@@ -203,6 +224,7 @@
   (add-hook 'typescript-mode #'subword-mode)
   (add-hook 'typescript-mode-hook 'setup-tide-mode)
   (add-hook 'typescript-mode-hook 'prettier-js-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 ;; Typescript-Mode:1 ends here
 
 ;; [[file:config.org::*Web-Mode][Web-Mode:1]]
@@ -211,25 +233,26 @@
   :mode (("\\.tsx\\'" . web-mode))
   :init
   (add-hook 'web-mode-hook 'prettier-js-mode)
-  ;; (add-hook 'web-mode-hook (lambda ()
-        ;; (when (string-equal "tsx" (file-name-extension buffer-file-name)) (setup-tide-mode))))
-  ;; enable typescript-tslint checker
   (add-hook 'web-mode-hook (lambda () (pcase (file-name-extension buffer-file-name)
                       ("tsx" (setup-tide-mode))
                       (_ (my-web-mode-hook)))))
   :config
-  (setq web-mode-markup-indent-offset 2
-    web-mode-css-indent-offset 2
-    web-mode-code-indent-offset 2
-    web-mode-block-padding 2
-    web-mode-comment-style 2
-    web-mode-enable-css-colorization t
-    web-mode-enable-auto-pairing t
-    web-mode-enable-comment-keywords t
-    web-mode-enable-current-element-highlight t
-    web-mode-enable-auto-indentation nil))
+  (setq
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-block-padding 2
+   web-mode-comment-style 2
+   web-mode-enable-css-colorization t
+   web-mode-enable-auto-pairing t
+   web-mode-enable-current-column-highlight t
+   web-mode-auto-close-style 2
+   web-mode-enable-auto-quoting nil
+   web-mode-enable-auto-closing t
+   web-mode-enable-current-element-highlight t
+   web-mode-enable-auto-indentation nil))
 (eval-after-load "web-mode"
-  '(set-face-foreground 'web-mode-current-element-highlight-face "#ff0000"))
+  '(set-face-foreground 'web-mode-current-element-highlight-face "#ff9900"))
 ;; Web-Mode:1 ends here
 
 ;; [[file:config.org::*CSS-Mode][CSS-Mode:1]]

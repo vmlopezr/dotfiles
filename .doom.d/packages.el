@@ -3,13 +3,13 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-(package! auto-dim-other-buffers)
 (package! doom-modeline)
 (package! flycheck)
 (package! projectile)
 (package! dumb-jump)
 (package! ag)
 (package! editorconfig)
+(package! rainbow-mode)
 ;; web-design packages
 (package! typescript-mode)
 (package! tide)

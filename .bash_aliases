@@ -54,6 +54,7 @@ alias cpuinfo='lscpu'
 alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 
 alias utils='cd ~/Documents/utils'
+alias petro='cd ~/Documents/Petrovisor'
 alias github='cd ~/Documents/GitHub'
 alias dev='cd ~/Documents/development'
 alias docs='cd ~/Documents'
@@ -62,3 +63,4 @@ alias pen='cd ~/Documents/development/pen-testing && make run'
 alias hs='cd ~/Documents/development/haskell && make run'
 alias realias='source ~/.zshrc'
 alias ..="cd .."
+alias update='sudo dnf update -y'
