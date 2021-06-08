@@ -1,13 +1,64 @@
 // Place your key bindings in this file to override the defaults
 [
     {
-        "key": "ctrl+alt+u",
-        "command": "workbench.action.terminal.sendSequence",
-        "args": { "text": "brittany --write-mode=inplace `pwd`/${fileBasename}\u000D" }
+        "key": "space h",
+        "command": "workbench.action.navigateLeft",
+        "when": "editorTextFocus && neovim.mode==normal"
     },
     {
-        "key": "ctrl+alt+n",
-        "command": "workbench.action.terminal.sendSequence",
-        "args": { "text": "echo `pwd`/${fileBasename}\u000D" }
-    }
+        "key": "space l",
+        "command": "workbench.action.navigateRight",
+        "when": "editorTextFocus && neovim.mode==normal"
+    },
+    {
+        "key": "space k",
+        "command": "workbench.action.navigateUp",
+        "when": "editorTextFocus && neovim.mode==normal"
+    },
+    {
+        "key": "space j",
+        "command": "workbench.action.navigateDown",
+        
+        "when": "editorTextFocus && neovim.mode==normal"
+    },    
+    {
+        "key": "space s",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus && neovim.mode==normal"
+    },
+    {
+        "key": "space t",
+        "command": "workbench.action.terminal.focus",
+        "when": "editorTextFocus && neovim.mode==normal"
+    },
+    {
+        "key": "ctrl+o p",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "editorTextFocus"
+    },
+    { 
+        "key": "tab",
+        "command": "list.toggleExpand",
+        "when": "listFocus && !inputFocus"
+    },
+    { 
+        "key": "ctrl+k",
+        "command": "list.focusUp",
+        "when": "listFocus && !inputFocus"
+    },
+    { 
+        "key": "ctrl+j",
+        "command": "list.focusDown",
+        "when": "listFocus && !inputFocus"
+    },
+    { 
+        "key": "g+d",
+        "command": "editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor && neovim.mode==normal"
+    },
+    { 
+        "key": "g+b",
+        "command": "workbench.action.navigateBack",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor && neovim.mode==normal"
+    },
 ]
